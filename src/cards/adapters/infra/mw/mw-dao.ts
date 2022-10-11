@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { Definition } from '../dictionary/entities/wordData';
-import { MERRIAM_WEBSTER_API_KEY } from '../mw-dao/mw-dao.config';
+import { yaml } from 'js-yaml';
+import fs from 'fs';
 import fetch from 'node-fetch';
 
 @Injectable()
-export class MwDaoService {
-  private getUrl(word: string): string {
+export class MwDao {
+  getUrl(word: string): string {
+    const MERRIAM_WEBSTER_API_KEY: string = yaml.load(
+      fs.readFileSync('../config.yml', 'utf8'),
+    ).MERRIAM_WEBSTER_API_KEY;
     return `https://www.dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${MERRIAM_WEBSTER_API_KEY}`;
   }
 
-  private async fetchJson(word: string): Promise<any> {
+  async fetchJson(word: string): Promise<any> {
     const url: string = this.getUrl(word);
     const response = await fetch(url);
     if (!response.ok) {
@@ -20,9 +23,9 @@ export class MwDaoService {
     return json;
   }
 
-  public async getDefinitionList(word: string): Promise<Definition[]> {
+  async getDefinitionList(word: string): Promise<Definition[]> {
     const json: Array<any> = await this.fetchJson(word);
-    const definitionList: Definition[] = [];
+    const definitionList = [];
 
     for (let i = 0; i < json.length; i++) {
       if (json[i].hasOwnProperty('hom')) {
@@ -36,7 +39,6 @@ export class MwDaoService {
       }
       break;
     }
-    console.log(definitionList);
     return definitionList;
   }
 }
