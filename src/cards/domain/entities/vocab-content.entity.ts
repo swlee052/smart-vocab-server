@@ -1,29 +1,8 @@
 import { Entity } from '../../../common/domain/entity.interface';
+import { Definition } from '../value-objects/definition.value-object';
 
 export class VocabContent extends Entity {
-  title: string;
-  definition: string[];
+  word: string;
   pronunciation?: string;
-  functionalLabel: FunctionalLabel;
-  exampleSentences: string[];
+  definitionList: Definition[];
 }
-
-export type FunctionalLabel =
-  | 'n'
-  | 'v'
-  | 'adj'
-  | 'adv'
-  | 'prep'
-  | 'conj'
-  | 'pron'
-  | 'art'
-  | 'num'
-  | 'int'
-  | 'interj'
-  | 'part'
-  | 'vb'
-  | 'vbd'
-  | 'vbg'
-  | 'vbn'
-  | 'vbp'
-  | 'vbz';

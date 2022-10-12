@@ -7,7 +7,6 @@ export class CardRepository implements Repository {
   private cards: Card[];
 
   create(card: Card) {
-    
   }
 
   exists(t: any): Promise<boolean> {
