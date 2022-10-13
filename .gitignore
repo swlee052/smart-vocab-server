@@ -1,5 +1,5 @@
 # configs 
-config.yml
+config.ts
 
 # compiled output
 /dist

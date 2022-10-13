@@ -2,9 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { yaml } from 'js-yaml';
 import fs from 'fs';
 import fetch from 'node-fetch';
+import { VocabContent } from '../../../domain/entities/vocab-content.entity';
+import { IDictionaryDao } from '../vocab-card.repository';
 
 @Injectable()
-export class MwDao {
+export class MwDao implements IDictionaryDao {
+  getVocabContent(): Promise<VocabContent> {
+    throw new Error('Method not implemented.');
+  }
   getUrl(word: string): string {
     const MERRIAM_WEBSTER_API_KEY: string = yaml.load(
       fs.readFileSync('../config.yml', 'utf8'),
@@ -23,16 +28,17 @@ export class MwDao {
     return json;
   }
 
-  async getDefinitionList(word: string): Promise<Definition[]> {
+  async getDefinitionList(word: string): Promise<VocabContent[]> {
     const json: Array<any> = await this.fetchJson(word);
     const definitionList = [];
 
     for (let i = 0; i < json.length; i++) {
       if (json[i].hasOwnProperty('hom')) {
-        const Definition: Definition = {
+        const content: VocabContent = {
           definition: json[i].shortdef,
           functionalLabel: json[i].fl,
           exampleSentences: json[i].hwi.prs,
+          title: word,
         };
         definitionList.push(Definition);
         continue;

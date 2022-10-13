@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MwDao } from './mw-dao';
+import { MwDao } from './mw.dao';
 
 describe('MwDao', () => {
   let service: MwDao;

@@ -1,15 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { CardsService } from '../../app/services/cards.service';
-import { CreateCardDto } from '../../dto/create-card.dto';
-import { UpdateCardDto } from '../../dto/update-card.dto';
+import { CreateVocabCardDto } from '../../dto/create-vocab-card.dto';
 import { ContentType } from './constants';
 
 @Controller('cards')
@@ -19,7 +10,7 @@ export class VocabCardsController {
   @Post()
   create(
     @Param('type') type: ContentType,
-    @Body() createCardDto: CreateCardDto,
+    @Body() createCardDto: CreateVocabCardDto,
   ) {
     return this.cardsService.create(createCardDto);
   }
@@ -32,11 +23,6 @@ export class VocabCardsController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.cardsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCardDto: UpdateCardDto) {
-    return this.cardsService.update(+id, updateCardDto);
   }
 
   @Delete(':id')
